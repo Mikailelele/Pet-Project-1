@@ -7,19 +7,21 @@ namespace PepegaAR.LifetimeScope
     using UnityEngine;
     using Sirenix.OdinInspector;
     using Core.Player;
-    using Player.PlayerManagers;
     using Interfaces;
     using UI;
+    using Core.TargetImageSetuper;
+    using Core.Enemy;
 
     public sealed class SceneLifetimeScope : LifetimeScope
     {
-        [SerializeField]
-        [FoldoutGroup("Player")]
-        private Player _player;
+        [FoldoutGroup("Targets")]
+        [SerializeField] private Player _player;
 
-        [SerializeField]
+        [FoldoutGroup("Targets")]
+        [SerializeField] private Enemy _enemy;
+
         [FoldoutGroup("UI")]
-        private WeaponCanvas _weaponCanvas;
+        [SerializeField] private WeaponCanvas _weaponCanvas;
 
         private IContainerBuilder _builder;
 
@@ -36,7 +38,7 @@ namespace PepegaAR.LifetimeScope
 
         private void SpawnObjects()
         {
-            SpawnPlayer();
+            SpawnTargets();
             SpawnUi();
         }
 
@@ -44,7 +46,9 @@ namespace PepegaAR.LifetimeScope
         {
             _builder.UseEntryPoints(Lifetime.Singleton, entryPoint =>
             {
-                entryPoint.Add<PlayerSetuper>();
+                entryPoint.Add<PlayerTargetSetuper>();
+                entryPoint.Add<EnemyTargetSetuper>();
+                entryPoint.Add<EnemyMovement>();
                 entryPoint.Add<UISetuper>();
                 entryPoint.Add<WeaponManager>();
                 entryPoint.Add<ShootController>();
@@ -65,15 +69,21 @@ namespace PepegaAR.LifetimeScope
             _builder.RegisterMessageBroker<ShootActionMessage>(options);
             _builder.RegisterMessageBroker<OnWeaponSwitchedMessage>(options);
             _builder.RegisterMessageBroker<SwitchWeaponMessage>(options);
+            _builder.RegisterMessageBroker<OnPlayerDetectingStatusChangedMessage>(options);
+            _builder.RegisterMessageBroker<OnEnemyDetectingStatusChangedMessage>(options);
         }
 
-        private void SpawnPlayer()
+        private void SpawnTargets()
         {
             var playerInstance = Instantiate(_player);
             _builder.RegisterInstance(playerInstance).As<IPlayer>();
 
+            var enemyInstance = Instantiate(_enemy);
+            _builder.RegisterInstance(enemyInstance).As<IEnemy>();
+
             _builder.RegisterBuildCallback(container => {
                 container.InjectGameObject(playerInstance.gameObject);
+                container.InjectGameObject(enemyInstance.gameObject);
             });
         }
 

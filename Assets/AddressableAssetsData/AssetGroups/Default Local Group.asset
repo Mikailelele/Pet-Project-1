@@ -21,6 +21,10 @@ MonoBehaviour:
     m_Address: ARTargets/Player
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: a945bea5d56992e4eb9a1b38b69a7112
+    m_Address: ARTargets/Enemy
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 24ce9987c2177254bb8c199cab78e158, type: 2}
   m_SchemaSet:

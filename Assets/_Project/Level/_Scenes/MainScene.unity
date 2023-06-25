@@ -680,5 +680,6 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _player: {fileID: 1142107444299100363, guid: 9cc1d622ee8716d4d9c106d059e0a59d, type: 3}
+  _enemy: {fileID: 3126491732323502202, guid: 50676d814b311a74d8369ae89b6929fd, type: 3}
   _weaponCanvas: {fileID: -3311872311874435875, guid: a78487e389fe6af468333c9452bb8143,
     type: 3}

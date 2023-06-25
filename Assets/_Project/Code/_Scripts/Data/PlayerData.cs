@@ -1,9 +1,8 @@
 ﻿namespace PepegaAR.Data
 {
-    using System;
     using UnityEngine;
 
-    [Serializable]
+    [System.Serializable]
     public struct PlayerData
     {
         [field: SerializeField]
